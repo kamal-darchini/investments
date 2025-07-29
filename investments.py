@@ -2,4 +2,4 @@
 import streamlit as st
 
 st.set_page_config(layout="wide")
-st.title("Investment Insights Dashboard")
+st.title("Financial Calculator Suite")
