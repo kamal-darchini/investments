@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objects as go
 import math
 
 st.set_page_config(layout="wide")
@@ -65,8 +66,14 @@ col1, col2 = st.columns(2)
 # Display the data-frame as a chart
 col1.write("### Payment Schedule")
 payments_df = df[["Year", "Remaining Balance"]].groupby("Year").min().reset_index()
-payments_df = payments_df.set_index("Year")
-col1.line_chart(data=payments_df, y="Remaining Balance")
+fig = px.line(payments_df, x="Year", y="Remaining Balance",
+              title="Remaining Balance Over Time")
+fig.update_layout(
+    xaxis_title="Year",
+    yaxis_title="Remaining Balance ($)",
+    showlegend=False
+)
+col1.plotly_chart(fig, use_container_width=True)
 
 # Calculate and display annual interest paid
 col2.write("### Annual Interest Paid and Tax Deductions")
