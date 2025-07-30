@@ -63,7 +63,7 @@ df = pd.DataFrame(
 # Create two columns for chart and table
 col1, col2 = st.columns(2)
 
-# Display the data-frame as a chart
+# Display the data-frame as a chart with unique key
 payments_df = df[["Year", "Remaining Balance"]].groupby("Year").min().reset_index()
 fig = px.line(payments_df, x="Year", y="Remaining Balance",
               title="Remaining Balance Over Time")
@@ -72,7 +72,7 @@ fig.update_layout(
     yaxis_title="Remaining Balance ($)",
     showlegend=False
 )
-col1.plotly_chart(fig, use_container_width=True)
+col1.plotly_chart(fig, use_container_width=True, key="balance_chart")
 
 # Calculate and display annual interest paid
 col2.write("### Annual Interest Paid and Tax Deductions")
@@ -99,4 +99,4 @@ annual_interest = annual_interest[
     ["Year", "Remaining Balance", "Annual Interest Paid", "Deductible Interest", "Tax Deduction (34%)",
      "Deductible Ratio"]]
 annual_interest.set_index("Year", inplace=True)
-col2.dataframe(annual_interest, height=300)  # Adjusted height for side-by-side display
+col2.dataframe(annual_interest, height=300, key="interest_table")  # Adjusted height for side-by-side display
