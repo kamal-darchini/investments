@@ -133,7 +133,7 @@ fig1.update_layout(
     yaxis_title='Value ($)',
     barmode='group'
 )
-col1.plotly_chart(fig1, use_container_width=True)
+col1.plotly_chart(fig1, use_container_width=True, key="house1_chart")
 
 # Net Worth Components for House 2
 fig2 = go.Figure()
@@ -146,7 +146,7 @@ fig2.update_layout(
     yaxis_title='Value ($)',
     barmode='group'
 )
-col2.plotly_chart(fig2, use_container_width=True)
+col2.plotly_chart(fig2, use_container_width=True, key="house2_chart")
 
 # Display detailed data
 col1, col2 = st.columns(2)
@@ -173,4 +173,4 @@ fig3.update_layout(
     yaxis_title='Value ($)',
     showlegend=True
 )
-col1.plotly_chart(fig3, use_container_width=True)
+col1.plotly_chart(fig3, use_container_width=True, key="difference_chart")
