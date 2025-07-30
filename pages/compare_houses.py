@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+import plotly.express as px
 import math
 
 st.set_page_config(layout="wide")
@@ -121,32 +122,31 @@ col1.write("### Net Worth For House 1")
 col2.write("### Net Worth For House 2")
 
 col1, col2 = st.columns(2)
-# Net Worth Components
-fig1, ax1 = plt.subplots()
-x = df1['Month']
-width = 0.35
-ax1.bar(x - width / 2, df1['House Equity'], width, label='House Equity')
-ax1.bar(x + width / 2, df1['Stock Portfolio'], width, label='Stock Portfolio')
-ax1.plot(x, df1['Net Worth'], 'r-', label='Net Worth', linewidth=2)
-ax1.legend(loc='upper left')
-ax1.set_xlabel('Month')
-ax1.set_ylabel('Value ($)')
-ax1.set_title(f'Net Worth Components - ${house_value_1:,} House')
-col1.pyplot(fig1)
+# Net Worth Components for House 1
+fig1 = go.Figure()
+fig1.add_trace(go.Bar(x=df1['Month'], y=df1['House Equity'], name='House Equity'))
+fig1.add_trace(go.Bar(x=df1['Month'], y=df1['Stock Portfolio'], name='Stock Portfolio'))
+fig1.add_trace(go.Scatter(x=df1['Month'], y=df1['Net Worth'], name='Net Worth', line=dict(color='red', width=2)))
+fig1.update_layout(
+    title=f'Net Worth Components - ${house_value_1:,} House',
+    xaxis_title='Month',
+    yaxis_title='Value ($)',
+    barmode='group'
+)
+col1.plotly_chart(fig1, use_container_width=True)
 
-# Net Worth Components
-fig1, ax1 = plt.subplots()
-x = df2['Month']
-width = 0.35
-ax1.bar(x - width / 2, df2['House Equity'], width, label='House Equity')
-ax1.bar(x + width / 2, df2['Stock Portfolio'], width, label='Stock Portfolio')
-ax1.plot(x, df2['Net Worth'], 'r-', label='Net Worth', linewidth=2)
-ax1.legend(loc='upper left')
-ax1.set_xlabel('Month')
-ax1.set_ylabel('Value ($)')
-ax1.set_title(f'Net Worth Components - ${house_value_2:,} House')
-col2.pyplot(fig1)
-
+# Net Worth Components for House 2
+fig2 = go.Figure()
+fig2.add_trace(go.Bar(x=df2['Month'], y=df2['House Equity'], name='House Equity'))
+fig2.add_trace(go.Bar(x=df2['Month'], y=df2['Stock Portfolio'], name='Stock Portfolio'))
+fig2.add_trace(go.Scatter(x=df2['Month'], y=df2['Net Worth'], name='Net Worth', line=dict(color='red', width=2)))
+fig2.update_layout(
+    title=f'Net Worth Components - ${house_value_2:,} House',
+    xaxis_title='Month',
+    yaxis_title='Value ($)',
+    barmode='group'
+)
+col2.plotly_chart(fig2, use_container_width=True)
 
 # Display detailed data
 col1, col2 = st.columns(2)
@@ -163,14 +163,14 @@ col2.dataframe(df2.groupby(['Year', 'Month']).last().round(0).astype(int))
 # Plot net worth difference
 st.write("### Net Worth Difference (House 1 - House 2)")
 col1, col2 = st.columns(2)
-fig3, ax3 = plt.subplots(figsize=(8, 4))
 x = (df1['Year'] - 1) * 12 + df1['Month']
-ax3.bar(x, df1['Net Worth'] - df2['Net Worth'], color='b')
-ax3.axhline(y=0, color='r', linestyle='--')
-ax3.legend(loc='upper left')
-ax3.set_xlabel('Month of Year')
-ax3.set_ylabel('Value ($)')
-ax3.set_title('Net Worth Difference Between Houses')
-col1.pyplot(fig3)
-
-
+fig3 = go.Figure()
+fig3.add_trace(go.Bar(x=x, y=df1['Net Worth'] - df2['Net Worth'], name='Net Worth Difference'))
+fig3.add_hline(y=0, line_dash="dash", line_color="red")
+fig3.update_layout(
+    title='Net Worth Difference Between Houses',
+    xaxis_title='Month of Year',
+    yaxis_title='Value ($)',
+    showlegend=True
+)
+col1.plotly_chart(fig3, use_container_width=True)

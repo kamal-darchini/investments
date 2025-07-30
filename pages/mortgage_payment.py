@@ -28,7 +28,7 @@ monthly_payment = (
 total_payments = monthly_payment * number_of_payments
 total_interest = total_payments - loan_amount
 
-st.write("### Repayments")
+st.write("### Payments")
 col1, col2, col3 = st.columns(3)
 col1.metric(label="Monthly Repayments", value=f"${monthly_payment:,.2f}")
 col2.metric(label="Total Repayments", value=f"${total_payments:,.0f}")
@@ -64,7 +64,6 @@ df = pd.DataFrame(
 col1, col2 = st.columns(2)
 
 # Display the data-frame as a chart
-col1.write("### Payment Schedule")
 payments_df = df[["Year", "Remaining Balance"]].groupby("Year").min().reset_index()
 fig = px.line(payments_df, x="Year", y="Remaining Balance",
               title="Remaining Balance Over Time")
